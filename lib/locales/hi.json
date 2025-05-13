@@ -1,0 +1,185 @@
+{
+  "start_practice": "अभ्यास शुरू करें",
+  "my_page": "मेरा पेज",
+  "login": "लॉगिन",
+  "practice": "अभ्यास",
+  "ai_greeting": "नमस्ते! मैं आपका AI इंग्लिश कन्वर्सेशन पार्टनर हूँ। आज आप किसका अभ्यास करना चाहेंगे?",
+  "show_translation": "अनुवाद दिखाएँ/छिपाएँ",
+  "conversation_mode": "वार्तालाप मोड",
+  "select_scenario": "परिदृश्य चुनें",
+  "free_conversation": "मुक्त वार्तालाप",
+  "job_interview": "नौकरी का इंटरव्यू",
+  "toefl_practice": "TOEFL अभ्यास",
+  "toeic_practice": "TOEIC अभ्यास",
+  "business_english": "व्यापारिक अंग्रेज़ी",
+  "travel_situations": "यात्रा परिस्थितियाँ",
+  "suggested_topics": "सुझाए गए विषय",
+  "general": "सामान्य",
+  "business": "व्यापार",
+  "academic": "शैक्षिक",
+  "hobbies_interests": "शौक और रुचियाँ",
+  "food_cuisine": "खाना और व्यंजन",
+  "places_travel": "स्थान और यात्रा",
+  "work_experience": "कार्य अनुभव",
+  "customer_service": "ग्राहक सेवा",
+  "leadership": "नेतृत्व",
+  "education": "शिक्षा",
+  "science": "विज्ञान",
+  "learning_methods": "सीखने के तरीके",
+  "controls": "नियंत्रण",
+  "new_chat": "नई चैट",
+  "text_to_speech": "टेक्स्ट से वाणी",
+
+  "boost_english": "AI के साथ अपने अंग्रेजी बोलने के कौशल को तेजी से बढ़ाएँ",
+  "practice_description": "उच्चारण, प्रवाह और शब्दावली में सुधार के लिए AI के साथ अभ्यास करें",
+  "input_placeholder": "संदेश लिखें...",
+  "key_features": "मुख्य विशेषताएँ",
+  "features_description": "अंग्रेजी बोलने में महारत हासिल करने के लिए शक्तिशाली सुविधाएँ",
+  "feature_chat": "AI चैट के साथ स्वतंत्र बातचीत",
+  "feature_chat_desc": "AI के साथ किसी भी विषय पर अंग्रेजी का अभ्यास करें",
+  "feature_feedback": "उच्चारण, प्रवाह और शब्दावली पर स्वचालित प्रतिक्रिया",
+  "feature_feedback_desc": "AI से रीयल-टाइम मूल्यांकन और सलाह प्राप्त करें",
+  "feature_scenario": "परिदृश्य-आधारित अभ्यास",
+  "feature_scenario_desc": "इंटरव्यू, यात्रा, व्यापार और अधिक के लिए वार्तालाप का अभ्यास करें",
+  "feature_history": "वार्तालाप इतिहास और स्कोर ट्रैकिंग",
+  "feature_history_desc": "अपनी पिछली बातचीत की समीक्षा करें और अपनी प्रगति को ट्रैक करें",
+  "feature_voice": "वॉइस रिकग्निशन के साथ बोलने का अभ्यास",
+  "feature_voice_desc": "जोर से बोलने का अभ्यास करने के लिए अपना माइक्रोफ़ोन उपयोग करें",
+
+  "dashboard": "मेरा डैशबोर्ड",
+  "dashboard_desc": "अपनी प्रगति को ट्रैक करें और अपनी अनुशंसित शिक्षण योजना देखें",
+  "start_new_practice": "नया अभ्यास शुरू करें",
+  "total_practice_time": "कुल अभ्यास समय",
+  "sessions_completed": "पूरे किए गए सत्र",
+  "average_score": "औसत स्कोर",
+  "vocabulary_learned": "सीखे गए शब्द",
+  "from_last_week": "पिछले सप्ताह से",
+  "practice_history": "अभ्यास इतिहास",
+  "activity_over_time": "समय के साथ गतिविधि",
+  "weekly": "साप्ताहिक",
+  "monthly": "मासिक",
+  "minutes_practiced": "प्रति दिन अभ्यास किए गए मिनट",
+  "score_out_of_5": "स्कोर (5 में से)",
+  "practice_calendar": "अभ्यास कैलेंडर",
+  "practice_sessions": "अभ्यास सत्र",
+  "skills_assessment": "कौशल मूल्यांकन",
+  "performance_by_skill": "कौशल क्षेत्र के अनुसार प्रदर्शन",
+  "ai_recommended": "AI अनुशंसित शिक्षण",
+  "personalized_suggestions": "आपके प्रदर्शन के आधार पर व्यक्तिगत सुझाव",
+  "todays_focus": "आज का फोकस: उच्चारण",
+  "challenging_sounds": "चुनौतीपूर्ण ध्वनियों का अभ्यास करें",
+  "start_pronunciation": "उच्चारण अभ्यास शुरू करें",
+  "suggested_practice": "सुझाए गए अभ्यास सत्र",
+  "how_to_use_title": "कैसे उपयोग करें",
+  "how_to_use_body": "1. माइक बटन दबाएँ और अंग्रेज़ी में बोलें।\n2. AI आपको अंग्रेज़ी में उत्तर देगा।\n3. अनुवाद देखने के लिए 'अनुवाद दिखाएँ/छिपाएँ' बटन का उपयोग करें।\n4. विभिन्न वार्तालापों का अभ्यास करने के लिए परिदृश्य या विषय चुनें।",
+  "footer_description": "भारतीय शिक्षार्थियों के लिए AI-संचालित अंग्रेजी वार्तालाप अभ्यास।",
+  "footer_quick_links": "त्वरित लिंक",
+  "footer_practice": "अंग्रेजी का अभ्यास करें",
+  "footer_dashboard": "मेरा डैशबोर्ड",
+  "footer_pricing": "मूल्य निर्धारण योजनाएँ",
+  "footer_legal": "कानूनी",
+  "footer_privacy": "गोपनीयता नीति",
+  "footer_terms": "सेवा की शर्तें",
+  "footer_faq": "सामान्य प्रश्न",
+  "footer_connect": "कनेक्ट करें",
+  "footer_copyright": "सर्वाधिकार सुरक्षित।",
+  "phrase_set_title": "रोज़मर्रा में उपयोगी वाक्यांश",
+  "phrase_set_category_start": "बातचीत की शुरुआत",
+  "phrase_set_category_reaction": "प्रतिक्रियाएँ",
+  "phrase_set_category_bye": "विदाई",
+  "phrase_set_category_change-topic": "विषय बदलना",
+  "phrase_set_category_thanks": "धन्यवाद और क्षमा",
+  "phrase_set_category_request": "अनुरोध",
+  "phrase_set_category_agree": "सहमति और असहमति",
+  "phrase_set_category_trouble": "समस्या के समय",
+  "phrase_set_category_weather": "मौसम",
+  "phrase_set_category_food": "भोजन और रेस्टोरेंट",
+  "phrase_set_category_hobby": "शौक और रुचियाँ",
+  "phrase_set_category_family": "परिवार और मित्र",
+  "phrase_set_category_shopping": "खरीदारी",
+  "phrase_set_category_health": "स्वास्थ्य",
+  "phrase_set_category_cafe": "स्टारबक्स/कैफ़े में",
+  "phrase_set": {
+    "start": [
+      {"phrase": "How's it going?", "translation": "कैसा चल रहा है?"},
+      {"phrase": "What's up?", "translation": "क्या हाल है?"},
+      {"phrase": "Long time no see!", "translation": "बहुत समय बाद मिल रहे हैं!"}
+    ],
+    "reaction": [
+      {"phrase": "I see.", "translation": "समझ गया।"},
+      {"phrase": "That's interesting.", "translation": "यह दिलचस्प है।"},
+      {"phrase": "Exactly!", "translation": "बिल्कुल सही!"}
+    ],
+    "bye": [
+      {"phrase": "See you around!", "translation": "फिर मिलेंगे!"},
+      {"phrase": "Take care!", "translation": "अपना ध्यान रखना!"},
+      {"phrase": "Have a nice day!", "translation": "आपका दिन शुभ हो!"}
+    ],
+    "change-topic": [
+      {"phrase": "By the way, ...", "translation": "वैसे..."},
+      {"phrase": "Speaking of which, ...", "translation": "वैसे याद आया..."},
+      {"phrase": "That reminds me, ...", "translation": "इससे याद आया..."},
+      {"phrase": "On a different note, ...", "translation": "कुछ और बात करें..."}
+    ],
+    "thanks": [
+      {"phrase": "Thank you so much.", "translation": "बहुत धन्यवाद।"},
+      {"phrase": "I really appreciate it.", "translation": "मैं इसकी सराहना करता हूँ।"},
+      {"phrase": "Sorry about that.", "translation": "इसके लिए माफ़ कीजिए।"},
+      {"phrase": "No worries.", "translation": "कोई बात नहीं।"}
+    ],
+    "request": [
+      {"phrase": "Could you help me?", "translation": "क्या आप मेरी मदद कर सकते हैं?"},
+      {"phrase": "Would you mind if I ...?", "translation": "अगर मैं ... करूँ तो आपको बुरा लगेगा?"},
+      {"phrase": "Can you do me a favor?", "translation": "क्या आप मेरी मदद कर सकते हैं?"}
+    ],
+    "agree": [
+      {"phrase": "I agree.", "translation": "मैं सहमत हूँ।"},
+      {"phrase": "I think so too.", "translation": "मुझे भी ऐसा ही लगता है।"},
+      {"phrase": "I'm not sure about that.", "translation": "मुझे इसमें संदेह है।"}
+    ],
+    "trouble": [
+      {"phrase": "I'm not sure.", "translation": "मुझे यकीन नहीं है।"},
+      {"phrase": "Let me think.", "translation": "मुझे सोचने दीजिए।"},
+      {"phrase": "Can you repeat that?", "translation": "क्या आप दोहरा सकते हैं?"}
+    ],
+    "weather": [
+      {"phrase": "It's sunny today.", "translation": "आज धूप है।"},
+      {"phrase": "It's raining.", "translation": "बारिश हो रही है।"},
+      {"phrase": "It's hot, isn't it?", "translation": "गर्मी है, है ना?"}
+    ],
+    "food": [
+      {"phrase": "I'm hungry.", "translation": "मुझे भूख लगी है।"},
+      {"phrase": "Let's eat out.", "translation": "चलो बाहर खाते हैं।"},
+      {"phrase": "This is delicious!", "translation": "यह बहुत स्वादिष्ट है!"}
+    ],
+    "hobby": [
+      {"phrase": "What are your hobbies?", "translation": "आपके शौक क्या हैं?"},
+      {"phrase": "I like reading.", "translation": "मुझे पढ़ना पसंद है।"},
+      {"phrase": "I play tennis.", "translation": "मैं टेनिस खेलता हूँ।"}
+    ],
+    "family": [
+      {"phrase": "Do you have any siblings?", "translation": "क्या आपके भाई-बहन हैं?"},
+      {"phrase": "Tell me about your family.", "translation": "अपने परिवार के बारे में बताइए।"},
+      {"phrase": "I have two children.", "translation": "मेरे दो बच्चे हैं।"}
+    ],
+    "shopping": [
+      {"phrase": "How much is this?", "translation": "यह कितने का है?"},
+      {"phrase": "Do you have this in another color?", "translation": "क्या यह किसी और रंग में है?"},
+      {"phrase": "Can I try this on?", "translation": "क्या मैं इसे पहन कर देख सकता हूँ?"}
+    ],
+    "health": [
+      {"phrase": "I don't feel well.", "translation": "मुझे अच्छा नहीं लग रहा है।"},
+      {"phrase": "I have a headache.", "translation": "मुझे सिरदर्द है।"},
+      {"phrase": "Take care of yourself.", "translation": "अपना ध्यान रखना।"}
+    ],
+    "cafe": [
+      {"phrase": "Can I get a tall latte, please?", "translation": "क्या मुझे एक टॉल लाटे मिल सकता है?"},
+      {"phrase": "Is this seat taken?", "translation": "क्या यह सीट खाली है?"},
+      {"phrase": "Can I have it to go?", "translation": "क्या मैं इसे पैक करवा सकता हूँ?"},
+      {"phrase": "Do you have soy milk?", "translation": "क्या आपके पास सोया मिल्क है?"},
+      {"phrase": "Can I get this without sugar?", "translation": "क्या यह बिना शक्कर के मिल सकता है?"},
+      {"phrase": "What's the Wi-Fi password?", "translation": "वाई-फाई पासवर्ड क्या है?"},
+      {"phrase": "Can I get a receipt?", "translation": "क्या मुझे रसीद मिल सकती है?"}
+    ]
+  }
+} 
