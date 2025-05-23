@@ -14,6 +14,7 @@ import { useTranslation } from "@/hooks/useTranslation"
 import en from "@/lib/locales/en.json"
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
 import { LangContext } from "@/contexts/LangContext"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 type Message = {
   role: "user" | "assistant"
@@ -74,6 +75,7 @@ export default function PracticePage() {
 
   const t = useTranslation()
   const { lang } = React.useContext(LangContext)
+  const isMobile = useIsMobile();
 
   // 初期AIメッセージに訳を付与し、音声も1回だけ即座に再生
   useEffect(() => {
@@ -197,87 +199,102 @@ export default function PracticePage() {
     }
   }
 
+  // 音声認識の初期化と権限チェック
+  const initializeSpeechRecognition = async () => {
+    try {
+      // マイクの権限確認
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        await navigator.mediaDevices.getUserMedia({ audio: true });
+      }
+      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        throw new Error('BROWSER_NOT_SUPPORTED');
+      }
+      const recognition = new SpeechRecognition();
+      recognition.lang = "en-US";
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+      return recognition;
+    } catch (error: any) {
+      if (error.name === 'NotAllowedError' || error.message === 'Permission denied') {
+        throw new Error('MIC_PERMISSION_DENIED');
+      }
+      throw error;
+    }
+  };
+
+  // 詳細なエラーメッセージ
+  const handleRecognitionError = (error: any) => {
+    let errorMessage = "音声認識に失敗しました。";
+    switch(error.message) {
+      case 'BROWSER_NOT_SUPPORTED':
+        errorMessage = "お使いのブラウザは音声認識に対応していません。ChromeやEdgeなどの最新のブラウザをお試しください。";
+        break;
+      case 'MIC_PERMISSION_DENIED':
+        errorMessage = "マイクへのアクセスが許可されていません。ブラウザの設定でマイクの使用を許可してください。";
+        break;
+      case 'NETWORK_ERROR':
+        errorMessage = "ネットワークエラーが発生しました。インターネット接続を確認してください。";
+        break;
+    }
+    setMessages((prev) => [
+      ...prev,
+      { role: "assistant", content: errorMessage },
+    ]);
+  };
+
   // 音声認識の開始・停止（Web Speech API）
   const toggleRecording = async () => {
     if (!isRecording) {
-      // 録音開始
-      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
-      if (!SpeechRecognition) {
-        setMessages((prev) => [
-          ...prev,
-          { role: "assistant", content: "このブラウザは音声認識に対応していません。" },
-        ])
-        return
-      }
-      const recognition = new SpeechRecognition()
-      recognitionRef.current = recognition
-      recognition.lang = "en-US"
-      recognition.interimResults = false
-      recognition.maxAlternatives = 1
-
-      recognition.onresult = async (event: any) => {
-        // すべての候補を結合し、部分的な単語やフレーズも最大限抽出
-        let transcript = "";
-        for (let i = 0; i < event.results.length; i++) {
-          transcript += event.results[i][0].transcript + " ";
-        }
-        transcript = transcript.trim();
-
-        // 認識した音声が存在する場合
-        if (transcript) {
-          console.log("認識された音声: ", transcript);
-          
-          // フォーマットを修正：英語が含まれない場合も、そのまま英語として扱う
-          // 前処理：文頭を大文字にし、最後にピリオドがなければ追加
-          transcript = transcript.charAt(0).toUpperCase() + transcript.slice(1);
-          if (!transcript.endsWith('.') && !transcript.endsWith('?') && !transcript.endsWith('!')) {
-            transcript += '.';
+      try {
+        const recognition = await initializeSpeechRecognition();
+        recognitionRef.current = recognition;
+        recognition.onresult = async (event: any) => {
+          let transcript = "";
+          for (let i = 0; i < event.results.length; i++) {
+            transcript += event.results[i][0].transcript + " ";
           }
-          
-          // 音声認識されたテキストを入力欄にセット
-          setInput(transcript);
-          
-          try {
-            // ユーザー発話を追加してから、AIに送信
-            const userWithTranslation = await translateWithLang(transcript, lang);
-            setMessages((prev) => [...prev, { role: "user", content: userWithTranslation }]);
-            
-            // 音声認識からのフラグをtrueにして、重複表示を防ぐ
-            handleSendMessage(transcript, true);
-          } catch (error) {
-            console.error("翻訳処理エラー:", error);
-            // 翻訳に失敗した場合でも、認識したテキストだけは表示する
-            setMessages((prev) => [...prev, { role: "user", content: transcript }]);
-            handleSendMessage(transcript, true);
+          transcript = transcript.trim();
+          if (transcript) {
+            transcript = transcript.charAt(0).toUpperCase() + transcript.slice(1);
+            if (!transcript.endsWith('.') && !transcript.endsWith('?') && !transcript.endsWith('!')) {
+              transcript += '.';
+            }
+            setInput(transcript);
+            try {
+              const userWithTranslation = await translateWithLang(transcript, lang);
+              setMessages((prev) => [...prev, { role: "user", content: userWithTranslation }]);
+              handleSendMessage(transcript, true);
+            } catch (error) {
+              setMessages((prev) => [...prev, { role: "user", content: transcript }]);
+              handleSendMessage(transcript, true);
+            }
+          } else {
+            setMessages((prev) => [
+              ...prev,
+              { role: "assistant", content: "Could you say that again?\nもう一度言っていただけますか？" }
+            ]);
           }
-        } else {
-          // 完全に無音だった場合のみ「Could you say that again?」と返す
-          setMessages((prev) => [
-            ...prev,
-            { role: "assistant", content: "Could you say that again?\nもう一度言っていただけますか？" }
-          ]);
-        }
+          setIsRecording(false);
+        };
+        recognition.onerror = (event: any) => {
+          handleRecognitionError(event.error ? { message: event.error } : event);
+          setIsRecording(false);
+        };
+        recognition.onend = () => {
+          setIsRecording(false);
+        };
+        recognition.start();
+        setIsRecording(true);
+      } catch (error: any) {
+        handleRecognitionError(error);
         setIsRecording(false);
       }
-      recognition.onerror = (event: any) => {
-        setMessages((prev) => [
-          ...prev,
-          { role: "assistant", content: "音声認識に失敗しました。" },
-        ])
-        setIsRecording(false)
-      }
-      recognition.onend = () => {
-        setIsRecording(false)
-      }
-
-      recognition.start()
-      setIsRecording(true)
     } else {
-      // 録音停止
-      recognitionRef.current?.stop()
-      setIsRecording(false)
+      recognitionRef.current?.stop();
+      setIsRecording(false);
     }
-  }
+  };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -369,11 +386,11 @@ export default function PracticePage() {
         <div className="flex items-center gap-2 justify-center mt-4 flex-col py-6">
           <button
             onClick={toggleRecording}
-            className={`w-16 h-16 flex items-center justify-center rounded-full bg-primary text-white shadow-lg transition-colors duration-150 ${isRecording ? 'opacity-70' : 'hover:bg-primary/90'}`}
-            style={{ fontSize: '2.5rem', outline: 'none', border: 'none' }}
+            className={`${isMobile ? 'w-14 h-14 text-base' : 'w-16 h-16 text-2xl'} flex items-center justify-center rounded-full bg-primary text-white shadow-lg transition-colors duration-150 ${isRecording ? 'opacity-70' : 'hover:bg-primary/90'}`}
+            style={{ outline: 'none', border: 'none' }}
             aria-label={isRecording ? 'Stop Recording' : 'Start Recording'}
           >
-            {isRecording ? <MicOff className="h-10 w-10" /> : <Mic className="h-10 w-10" />}
+            {isRecording ? <MicOff className={isMobile ? 'h-8 w-8' : 'h-10 w-10'} /> : <Mic className={isMobile ? 'h-8 w-8' : 'h-10 w-10'} />}
           </button>
           {isRecording && (
             <div className="flex flex-col items-center mt-2">
