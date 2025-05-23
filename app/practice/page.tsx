@@ -117,7 +117,7 @@ export default function PracticePage() {
     if (suggestTimerRef.current) clearTimeout(suggestTimerRef.current);
     suggestTimerRef.current = setTimeout(async () => {
       if (input.trim() === "") {
-        const phrases = await suggestNextPhrases(messages, scenario);
+        const phrases = await suggestNextPhrases(messages, scenario, lang);
         setSuggestedPhrases(phrases);
       }
     }, 5000);
@@ -125,7 +125,7 @@ export default function PracticePage() {
       if (suggestTimerRef.current) clearTimeout(suggestTimerRef.current);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [messages, scenario, isLoading]);
+  }, [messages, scenario, isLoading, lang]);
 
   // ユーザーが入力を始めたら提案フレーズを非表示
   useEffect(() => {
@@ -150,7 +150,7 @@ export default function PracticePage() {
         setMessages((prev) => [...prev, { role: "user", content: userWithTranslation }])
       }
 
-      const response = await getAIResponse(messageToSend, scenario as ConversationMode, messages)
+      const response = await getAIResponse(messageToSend, scenario as ConversationMode, messages, lang)
       setMessages((prev) => [...prev, { role: "assistant", content: response.message }])
       // 進捗データを仮で更新（例: 5分・スコア3~5のランダム）
       updateProgress({ minutes: 5, score: Math.floor(Math.random() * 3) + 3 });

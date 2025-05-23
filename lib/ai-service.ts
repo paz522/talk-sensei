@@ -21,6 +21,7 @@ export async function getAIResponse(
   message: string,
   mode: ConversationMode,
   previousMessages: { role: "user" | "assistant"; content: string }[],
+  lang: string
 ): Promise<{ message: string }> {
   try {
     const res = await fetch("/api/openrouter", {
@@ -29,6 +30,7 @@ export async function getAIResponse(
       body: JSON.stringify({
         messages: [...previousMessages, { role: "user", content: message }],
         mode,
+        lang,
       }),
     })
     if (!res.ok) throw new Error("API error")
@@ -119,7 +121,8 @@ export async function translateWithLang(message: string, lang: string): Promise<
 // ユーザーが返答に困ったときのためのフレーズ提案API
 export async function suggestNextPhrases(
   messages: { role: "user" | "assistant"; content: string }[],
-  scenario: string
+  scenario: string,
+  lang: string
 ): Promise<string> {
   try {
     const res = await fetch("/api/openrouter", {
@@ -129,6 +132,7 @@ export async function suggestNextPhrases(
         messages,
         mode: "suggest_phrase",
         scenario,
+        lang,
       }),
     })
     if (!res.ok) throw new Error("API error")
