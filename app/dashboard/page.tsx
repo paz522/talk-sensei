@@ -117,12 +117,12 @@ export default function DashboardPage() {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">連続勉強日数</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('streak_days')}</CardTitle>
             <BarChart className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{streak}日</div>
-            <p className="text-xs text-muted-foreground">今日を含む連続記録</p>
+            <p className="text-xs text-muted-foreground">{t('streak_days_desc')}</p>
           </CardContent>
         </Card>
         <Card>
@@ -179,7 +179,7 @@ export default function DashboardPage() {
         {/* カレンダー */}
         <Card>
           <CardHeader>
-            <CardTitle>カレンダー</CardTitle>
+            <CardTitle>{t('calendar')}</CardTitle>
           </CardHeader>
           <CardContent>
             <Calendar mode="single" selected={date} onSelect={setDate} className="rounded-md border" />

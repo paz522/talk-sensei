@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
         { role: "system", content: systemPrompt },
         ...messages,
       ],
-      max_tokens: 1500,
+      max_tokens: 1300,
     }),
   })
 

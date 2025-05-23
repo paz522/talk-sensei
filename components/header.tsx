@@ -19,6 +19,10 @@ export default function Header() {
     setLang(newLang)
     if (typeof window !== 'undefined') {
       localStorage.setItem("lang", newLang)
+      if (window.location.pathname === "/" || window.location.pathname === "/hi" || window.location.pathname === "/ta" || window.location.pathname === "/te") {
+        if (newLang === "en") window.location.href = "/"
+        else window.location.href = "/" + newLang
+      }
     }
   }
 
@@ -57,7 +61,8 @@ export default function Header() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem onClick={() => handleLangChange("hi")}>हिन्दी (Hindi)</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleLangChange("ja")}>日本語 (Japanese)</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleLangChange("ta")}>தமிழ் (Tamil)</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleLangChange("te")}>తెలుగు (Telugu)</DropdownMenuItem>
               <DropdownMenuItem onClick={() => handleLangChange("en")}>English</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -95,7 +100,8 @@ export default function Header() {
               <span className="text-sm font-medium">
                 {lang === "en" && "English"}
                 {lang === "hi" && "हिन्दी"}
-                {lang === "ja" && "日本語"}
+                {lang === "ta" && "தமிழ்"}
+                {lang === "te" && "తెలుగు"}
               </span>
             </div>
           </nav>

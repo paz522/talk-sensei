@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://speakpro-india.vercel.app
+
+# Sitemaps
+Sitemap: https://speakpro-india.vercel.app/sitemap.xml

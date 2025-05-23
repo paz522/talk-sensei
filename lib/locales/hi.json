@@ -181,5 +181,8 @@
       {"phrase": "What's the Wi-Fi password?", "translation": "वाई-फाई पासवर्ड क्या है?"},
       {"phrase": "Can I get a receipt?", "translation": "क्या मुझे रसीद मिल सकती है?"}
     ]
-  }
+  },
+  "streak_days": "लगातार अध्ययन के दिन",
+  "streak_days_desc": "आज सहित लगातार दिन",
+  "calendar": "कैलेंडर"
 } 

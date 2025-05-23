@@ -10,8 +10,12 @@ import { usePathname } from "next/navigation"
 import { useTranslation } from "@/hooks/useTranslation"
 
 export default function Footer() {
-  const pathname = typeof window !== 'undefined' ? window.location.pathname : '';
-  const shareUrl = typeof window !== 'undefined' ? window.location.origin + pathname : 'https://speakpro-india.vercel.app/';
+  const [shareUrl, setShareUrl] = React.useState('https://speakpro-india.vercel.app/');
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setShareUrl(window.location.origin + window.location.pathname);
+    }
+  }, []);
   const tweetText = encodeURIComponent('AI-powered English conversation practice app: ' + shareUrl);
   const xShareUrl = `https://twitter.com/intent/tweet?text=${tweetText}`;
 
