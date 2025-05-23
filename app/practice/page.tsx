@@ -1,6 +1,6 @@
 "use client"
 
-import type React from "react"
+import React from "react"
 
 import { useState, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
@@ -9,10 +9,11 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Mic, MicOff, Send, RefreshCw, Volume2, Lightbulb } from "lucide-react"
-import { getAIResponse, type ConversationMode, translateWithJapanese, suggestNextPhrases } from "@/lib/ai-service"
+import { getAIResponse, type ConversationMode, translateWithLang, suggestNextPhrases } from "@/lib/ai-service"
 import { useTranslation } from "@/hooks/useTranslation"
 import en from "@/lib/locales/en.json"
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
+import { LangContext } from "@/contexts/LangContext"
 
 type Message = {
   role: "user" | "assistant"
@@ -72,6 +73,7 @@ export default function PracticePage() {
   const suggestTimerRef = useRef<NodeJS.Timeout | null>(null)
 
   const t = useTranslation()
+  const { lang } = React.useContext(LangContext)
 
   // 初期AIメッセージに訳を付与し、音声も1回だけ即座に再生
   useEffect(() => {
@@ -79,7 +81,7 @@ export default function PracticePage() {
     (async () => {
       // 英語＋訳で初期メッセージをセット
       const aiMsg = en.ai_greeting;
-      const aiMsgWithTranslation = await translateWithJapanese(aiMsg);
+      const aiMsgWithTranslation = await translateWithLang(aiMsg, lang);
       if (isMounted) {
         setMessages([{ role: "assistant", content: aiMsgWithTranslation }]);
         if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
@@ -91,7 +93,7 @@ export default function PracticePage() {
       }
     })();
     return () => { isMounted = false; };
-  }, [t]);
+  }, [t, lang]);
 
   // Scroll to bottom of messages
   useEffect(() => {
@@ -144,7 +146,7 @@ export default function PracticePage() {
       // 音声認識からの場合は既にメッセージが追加されているため、重複しない
       if (!isFromVoiceRecognition) {
         // ユーザー発話（英語＋訳）を追加
-        const userWithTranslation = await translateWithJapanese(messageToSend)
+        const userWithTranslation = await translateWithLang(messageToSend, lang)
         setMessages((prev) => [...prev, { role: "user", content: userWithTranslation }])
       }
 
@@ -237,7 +239,7 @@ export default function PracticePage() {
           
           try {
             // ユーザー発話を追加してから、AIに送信
-            const userWithTranslation = await translateWithJapanese(transcript);
+            const userWithTranslation = await translateWithLang(transcript, lang);
             setMessages((prev) => [...prev, { role: "user", content: userWithTranslation }]);
             
             // 音声認識からのフラグをtrueにして、重複表示を防ぐ

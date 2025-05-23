@@ -11,11 +11,21 @@ export async function POST(req: NextRequest) {
     console.log("OPENROUTER_API_KEY is undefined or empty");
   }
 
-  const { messages, mode, scenario: scenarioParam } = await req.json()
+  const { messages, mode, scenario: scenarioParam, lang } = await req.json()
 
   let systemPrompt = ""
   if (mode === "translate") {
-    systemPrompt = "You are a translator specializing in English-to-Japanese translation. Your task is to determine if the input is English text, and provide a natural Japanese translation (訳).\n\nFirst, analyze if the input is intended to be English (even if it has grammatical errors or contains some non-English text). If the input appears to be English or meant to be English with errors, correct any minor errors, then translate it to Japanese.\n\nRespond in the following format:\n[Corrected English text]\n[Japanese translation (訳)]\n\nMake sure the translation starts on a new line after the English sentence."
+    // 言語ごとにsystemPromptを切り替え
+    if (lang === "hi") {
+      systemPrompt = "You are a translator specializing in English-to-Hindi translation. Your task is to determine if the input is English text, and provide a natural Hindi translation (अनुवाद).\n\nFirst, analyze if the input is intended to be English (even if it has grammatical errors or contains some non-English text). If the input appears to be English or meant to be English with errors, correct any minor errors, then translate it to Hindi.\n\nRespond in the following format:\n[Corrected English text]\n[Hindi translation (अनुवाद)]\n\nMake sure the translation starts on a new line after the English sentence.";
+    } else if (lang === "ta") {
+      systemPrompt = "You are a translator specializing in English-to-Tamil translation. Your task is to determine if the input is English text, and provide a natural Tamil translation (மொழிபெயர்ப்பு).\n\nFirst, analyze if the input is intended to be English (even if it has grammatical errors or contains some non-English text). If the input appears to be English or meant to be English with errors, correct any minor errors, then translate it to Tamil.\n\nRespond in the following format:\n[Corrected English text]\n[Tamil translation (மொழிபெயர்ப்பு)]\n\nMake sure the translation starts on a new line after the English sentence.";
+    } else if (lang === "te") {
+      systemPrompt = "You are a translator specializing in English-to-Telugu translation. Your task is to determine if the input is English text, and provide a natural Telugu translation (అనువాదం).\n\nFirst, analyze if the input is intended to be English (even if it has grammatical errors or contains some non-English text). If the input appears to be English or meant to be English with errors, correct any minor errors, then translate it to Telugu.\n\nRespond in the following format:\n[Corrected English text]\n[Telugu translation (అనువాదం)]\n\nMake sure the translation starts on a new line after the English sentence.";
+    } else {
+      // デフォルトは日本語
+      systemPrompt = "You are a translator specializing in English-to-Japanese translation. Your task is to determine if the input is English text, and provide a natural Japanese translation (訳).\n\nFirst, analyze if the input is intended to be English (even if it has grammatical errors or contains some non-English text). If the input appears to be English or meant to be English with errors, correct any minor errors, then translate it to Japanese.\n\nRespond in the following format:\n[Corrected English text]\n[Japanese translation (訳)]\n\nMake sure the translation starts on a new line after the English sentence.";
+    }
   } else if (mode === "suggest_phrase") {
     let scenario = scenarioParam || "free";
     if (scenario === "interview") {

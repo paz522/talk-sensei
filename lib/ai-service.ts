@@ -83,44 +83,35 @@ export async function getRecommendedLearning(userId: string): Promise<any> {
   }
 }
 
-// ユーザー発言の英語＋日本語訳を取得
-export async function translateWithJapanese(message: string): Promise<string> {
+// ユーザー発言の英語＋多言語訳を取得
+export async function translateWithLang(message: string, lang: string): Promise<string> {
   try {
-    // 空文字列や無効な入力の場合は早期リターン
     if (!message || message.trim() === '') {
-      console.warn("translateWithJapanese: 空の入力文字列");
+      console.warn("translateWithLang: 空の入力文字列");
       return message;
     }
-
-    console.log("翻訳リクエスト:", message.substring(0, 50) + (message.length > 50 ? "..." : ""));
-    
+    console.log("翻訳リクエスト:", message.substring(0, 50) + (message.length > 50 ? "..." : ""), "lang:", lang);
     const res = await fetch("/api/openrouter", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         messages: [{ role: "user", content: message }],
         mode: "translate",
+        lang,
       }),
     })
-    
     if (!res.ok) {
       console.error("翻訳API エラーステータス:", res.status);
       throw new Error(`API error: ${res.status}`);
     }
-    
     const data = await res.json();
-    
-    // レスポンスの検証
     if (!data.message) {
       console.error("翻訳API 無効なレスポンス:", data);
       throw new Error("Invalid API response");
     }
-    
     return data.message;
   } catch (e) {
     console.error("翻訳エラー:", e);
-    // エラー時は翻訳を諦め、元の英語のみを返す
-    // 翻訳が機能しなくても会話は継続できるようにする
     return message;
   }
 }
