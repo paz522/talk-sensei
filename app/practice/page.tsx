@@ -204,43 +204,62 @@ export default function PracticePage() {
     try {
       // マイクの権限確認
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        await navigator.mediaDevices.getUserMedia({ audio: true });
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        // ストリームを停止（後で必要になったときに再度取得）
+        stream.getTracks().forEach(track => track.stop());
+      } else {
+        throw new Error('BROWSER_NOT_SUPPORTED');
       }
+
       const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
       if (!SpeechRecognition) {
         throw new Error('BROWSER_NOT_SUPPORTED');
       }
+
       const recognition = new SpeechRecognition();
       recognition.lang = "en-US";
       recognition.interimResults = false;
       recognition.maxAlternatives = 1;
+      recognition.continuous = false; // スマホ互換性向上
+
+      // エラーハンドリングの強化
+      recognition.onerror = (event: any) => {
+        console.error("Speech recognition error:", event.error);
+        let errorMessage = "Speech recognition failed.";
+        const isHindi = lang === "hi";
+        switch(event.error) {
+          case 'no-speech':
+            errorMessage = isHindi ? "कोई आवाज़ नहीं सुनी गई। कृपया फिर से प्रयास करें।" : "No speech was detected. Please try again.";
+            break;
+          case 'aborted':
+            errorMessage = isHindi ? "स्पीच रिकग्निशन रद्द कर दिया गया।" : "Speech recognition was aborted.";
+            break;
+          case 'audio-capture':
+            errorMessage = isHindi ? "माइक्रोफ़ोन उपलब्ध नहीं है। कृपया अपनी माइक्रोफ़ोन सेटिंग्स की जांच करें।" : "Microphone is not available. Please check your microphone settings.";
+            break;
+          case 'network':
+            errorMessage = isHindi ? "नेटवर्क त्रुटि हुई। कृपया अपना इंटरनेट कनेक्शन जांचें।" : "A network error occurred. Please check your internet connection.";
+            break;
+          case 'not-allowed':
+            errorMessage = isHindi ? "माइक्रोफ़ोन की अनुमति नहीं है। कृपया ब्राउज़र सेटिंग्स में माइक्रोफ़ोन की अनुमति दें।" : "Microphone access is not allowed. Please allow microphone usage in your browser settings.";
+            break;
+          case 'service-not-allowed':
+            errorMessage = isHindi ? "स्पीच रिकग्निशन सेवा उपलब्ध नहीं है। कृपया दूसरे ब्राउज़र का उपयोग करें।" : "Speech recognition service is not available. Please try a different browser.";
+            break;
+          default:
+            errorMessage = isHindi ? "स्पीच रिकग्निशन विफल रहा। कृपया पुनः प्रयास करें।" : "Speech recognition failed. Please try again.";
+        }
+        setMessages((prev) => [
+          ...prev,
+          { role: "assistant", content: errorMessage },
+        ]);
+        setIsRecording(false);
+      };
       return recognition;
     } catch (error: any) {
-      if (error.name === 'NotAllowedError' || error.message === 'Permission denied') {
-        throw new Error('MIC_PERMISSION_DENIED');
-      }
+      console.error("Speech recognition initialization error:", error);
       throw error;
     }
-  };
-
-  // 詳細なエラーメッセージ
-  const handleRecognitionError = (error: any) => {
-    let errorMessage = "音声認識に失敗しました。";
-    switch(error.message) {
-      case 'BROWSER_NOT_SUPPORTED':
-        errorMessage = "お使いのブラウザは音声認識に対応していません。ChromeやEdgeなどの最新のブラウザをお試しください。";
-        break;
-      case 'MIC_PERMISSION_DENIED':
-        errorMessage = "マイクへのアクセスが許可されていません。ブラウザの設定でマイクの使用を許可してください。";
-        break;
-      case 'NETWORK_ERROR':
-        errorMessage = "ネットワークエラーが発生しました。インターネット接続を確認してください。";
-        break;
-    }
-    setMessages((prev) => [
-      ...prev,
-      { role: "assistant", content: errorMessage },
-    ]);
   };
 
   // 音声認識の開始・停止（Web Speech API）
@@ -270,24 +289,41 @@ export default function PracticePage() {
               handleSendMessage(transcript, true);
             }
           } else {
+            const noSpeechMessage = lang === "hi" 
+              ? "कृपया फिर से बोलें।\nCould you say that again?"
+              : "Could you say that again?\nकृपया फिर से बोलें।";
             setMessages((prev) => [
               ...prev,
-              { role: "assistant", content: "Could you say that again?\nもう一度言っていただけますか？" }
+              { role: "assistant", content: noSpeechMessage }
             ]);
           }
-          setIsRecording(false);
-        };
-        recognition.onerror = (event: any) => {
-          handleRecognitionError(event.error ? { message: event.error } : event);
           setIsRecording(false);
         };
         recognition.onend = () => {
           setIsRecording(false);
         };
+        // スマホでの長時間録音問題を防ぐため10秒で自動停止
+        setTimeout(() => {
+          if (isRecording) {
+            recognition.stop();
+            setIsRecording(false);
+          }
+        }, 10000);
         recognition.start();
         setIsRecording(true);
       } catch (error: any) {
-        handleRecognitionError(error);
+        // ここで直接エラーメッセージを表示
+        let errorMessage = "Speech recognition failed.";
+        const isHindi = lang === "hi";
+        if (error.name === 'NotAllowedError' || error.message === 'Permission denied') {
+          errorMessage = isHindi ? "माइक्रोफ़ोन की अनुमति नहीं है। कृपया ब्राउज़र सेटिंग्स में माइक्रोफ़ोन की अनुमति दें।" : "Microphone access is not allowed. Please allow microphone usage in your browser settings.";
+        } else if (error.message === 'BROWSER_NOT_SUPPORTED') {
+          errorMessage = isHindi ? "आपका ब्राउज़र स्पीच रिकग्निशन को सपोर्ट नहीं करता। कृपया Chrome या Edge जैसे आधुनिक ब्राउज़र का उपयोग करें।" : "Your browser does not support speech recognition. Please use a modern browser like Chrome or Edge.";
+        }
+        setMessages((prev) => [
+          ...prev,
+          { role: "assistant", content: errorMessage },
+        ]);
         setIsRecording(false);
       }
     } else {
@@ -305,6 +341,14 @@ export default function PracticePage() {
 
   // フレーズ集の多言語データ
   const phraseSet = t('phrase_set') || {};
+
+  // フレーズ訳をヒンディー語優先で表示
+  const getPhraseTranslation = (item: any) => {
+    if (lang === 'hi' && item.hi) return item.hi;
+    if (lang === 'hi' && item.translation) return item.translation; // fallback
+    if (item.translation) return item.translation;
+    return '';
+  };
 
   return (
     <div className="flex flex-row w-full min-h-screen h-screen">
@@ -433,7 +477,7 @@ export default function PracticePage() {
                   <ul className="mb-0 list-disc list-inside text-white p-2 w-full">
                     {Array.isArray(phrases) && phrases.map((item, idx) => (
                       <li key={idx} className="text-white">
-                        {item.phrase} {item.translation && <span className="text-white">（{item.translation}）</span>}
+                        {item.phrase} {getPhraseTranslation(item) && <span className="text-white">（{getPhraseTranslation(item)}）</span>}
                       </li>
                     ))}
                   </ul>
