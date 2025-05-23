@@ -19,4 +19,10 @@ export default function ContactPage() {
     <div className="max-w-xl mx-auto py-12 px-4">
       <h1 className="text-3xl font-bold mb-4">Contact Us</h1>
       <p className="mb-2">For support or inquiries about TalkSensei, please email us at:</p>
+      <a href="mailto:support@talksensei.com" className="text-primary underline">
+        support@talksensei.com
+      </a>
+    </div>
+  );
+}
  
