@@ -78,7 +78,16 @@ export default function DashboardPage() {
       break;
     }
   }
-  const vocabLearned = 78; // 仮: 別途管理する場合はここもlocalStorage化
+  // 語彙数をlocalStorageから取得
+  let vocabLearned = 0;
+  if (typeof window !== "undefined") {
+    try {
+      const words = JSON.parse(localStorage.getItem('vocabWords') || '[]');
+      vocabLearned = Array.isArray(words) ? words.length : 0;
+    } catch {
+      vocabLearned = 0;
+    }
+  }
   // 棒グラフの最大値を基準にスケーリング
   const maxMinutes = Math.max(...progress.weekly.map((d: { day: string; minutes: number; score: number }) => d.minutes), 1); // 0除算防止
 
@@ -121,7 +130,7 @@ export default function DashboardPage() {
             <BarChart className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{streak}日</div>
+            <div className="text-2xl font-bold">{streak}</div>
             <p className="text-xs text-muted-foreground">{t('streak_days_desc')}</p>
           </CardContent>
         </Card>

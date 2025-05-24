@@ -58,6 +58,30 @@ function updateProgress({ minutes, score }: { minutes: number; score: number }) 
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
 }
 
+// iOS判定ユーティリティ
+function isIOS() {
+  if (typeof window === "undefined") return false;
+  return /iP(hone|od|ad)/.test(window.navigator.userAgent);
+}
+
+// 新出語彙カウント用ユーティリティ
+function updateVocabWords(message: string) {
+  if (typeof window === "undefined") return;
+  // 英単語のみ抽出（小文字化）
+  const userWords = (message.toLowerCase().match(/[a-zA-Z]+/g) || []);
+  // ストップワード（よく使う英語の機能語）は除外
+  const stopWords = ["a","an","the","is","are","was","were","am","i","you","he","she","it","we","they","of","to","in","on","at","for","with","and","but","or","as","by","from","that","this","these","those","be","have","has","had","do","does","did","not","so","if","then","than","too","very","can","will","would","should","could","may","might","must","shall","let","us","our","your","his","her","their","my","me","him","them","who","whom","which","what","when","where","why","how","all","any","some","no","nor","each","every","either","neither","both","few","many","much","more","most","other","another","such","only","own","same","just","even","now","also","about","into","over","after","before","again","once"];
+  const filteredWords = userWords.filter(w => !stopWords.includes(w));
+  // 既存語彙を取得
+  const storedWords = JSON.parse(localStorage.getItem('vocabWords') || '[]');
+  // 新出語彙のみ追加
+  const newWords = filteredWords.filter(w => !storedWords.includes(w));
+  if (newWords.length > 0) {
+    const updatedWords = [...storedWords, ...newWords];
+    localStorage.setItem('vocabWords', JSON.stringify(updatedWords));
+  }
+}
+
 export default function PracticePage() {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState("")
@@ -76,6 +100,11 @@ export default function PracticePage() {
   const t = useTranslation()
   const { lang } = React.useContext(LangContext)
   const isMobile = useIsMobile();
+  const [isIOSDevice, setIsIOSDevice] = useState(false);
+
+  useEffect(() => {
+    setIsIOSDevice(isIOS());
+  }, []);
 
   // 初期AIメッセージに訳を付与し、音声も1回だけ即座に再生
   useEffect(() => {
@@ -151,7 +180,9 @@ export default function PracticePage() {
         const userWithTranslation = await translateWithLang(messageToSend, lang)
         setMessages((prev) => [...prev, { role: "user", content: userWithTranslation }])
       }
-
+      // --- 新出語彙カウント ---
+      updateVocabWords(messageToSend);
+      // ---
       const response = await getAIResponse(messageToSend, scenario as ConversationMode, messages, lang)
       setMessages((prev) => [...prev, { role: "assistant", content: response.message }])
       // 進捗データを仮で更新（例: 5分・スコア3~5のランダム）
@@ -353,7 +384,7 @@ export default function PracticePage() {
   return (
     <div className="flex flex-row w-full min-h-screen h-screen">
       {/* 使い方ガイド（左端） */}
-      <div className="w-[260px] flex-shrink-0 flex flex-col justify-start items-start p-4">
+      <div className="w-[260px] flex-shrink-0 flex flex-col justify-start items-start p-4 side-col">
         <div className="border border-blue-300 bg-blue-50 rounded-lg p-4 shadow-sm w-full">
           <div className="font-bold text-blue-700 mb-2 flex items-center gap-2">
             <span role='img' aria-label='info'>ℹ️</span> {t('how_to_use_title')}
@@ -430,13 +461,17 @@ export default function PracticePage() {
         <div className="flex items-center gap-2 justify-center mt-4 flex-col py-6">
           <button
             onClick={toggleRecording}
-            className={`${isMobile ? 'w-14 h-14 text-base' : 'w-16 h-16 text-2xl'} flex items-center justify-center rounded-full bg-primary text-white shadow-lg transition-colors duration-150 ${isRecording ? 'opacity-70' : 'hover:bg-primary/90'}`}
+            className={`${isMobile ? 'w-14 h-14 text-base' : 'w-16 h-16 text-2xl'} flex items-center justify-center rounded-full bg-primary text-white shadow-lg transition-colors duration-150 ${isRecording || isIOSDevice ? 'opacity-70' : 'hover:bg-primary/90'}`}
             style={{ outline: 'none', border: 'none' }}
             aria-label={isRecording ? 'Stop Recording' : 'Start Recording'}
+            disabled={isIOSDevice}
           >
             {isRecording ? <MicOff className={isMobile ? 'h-8 w-8' : 'h-10 w-10'} /> : <Mic className={isMobile ? 'h-8 w-8' : 'h-10 w-10'} />}
           </button>
-          {isRecording && (
+          {isIOSDevice && (
+            <div className="text-red-600 text-sm mt-2">iOS Safariでは音声認識はご利用いただけません</div>
+          )}
+          {isRecording && !isIOSDevice && (
             <div className="flex flex-col items-center mt-2">
               <span className="text-primary font-semibold text-lg flex items-center">
                 Listening
@@ -464,7 +499,7 @@ export default function PracticePage() {
         </div>
       </div>
       {/* フレーズ集（右端） */}
-      <div className="w-[370px] h-full overflow-y-auto overflow-x-hidden flex-shrink-0 pr-0 box-border" style={{ maxHeight: 'calc(100vh - 260px)' }}>
+      <div className="w-[370px] h-full overflow-y-auto overflow-x-hidden flex-shrink-0 pr-0 box-border phrase-col">
         <div className="rounded-lg p-4 shadow-sm w-[370px] h-full">
           <div className="font-bold text-green-700 mb-2 flex items-center gap-2">
             <span role='img' aria-label='spark'>💬</span> {t('phrase_set_title')}
@@ -487,6 +522,17 @@ export default function PracticePage() {
           </Accordion>
         </div>
       </div>
+      <style jsx global>{`
+        @media (max-width: 768px) {
+          .side-col, .phrase-col {
+            display: none !important;
+          }
+          .flex-1.flex.flex-col.h-full {
+            min-width: 100vw;
+            max-width: 100vw;
+          }
+        }
+      `}</style>
     </div>
   )
 }

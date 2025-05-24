@@ -58,5 +58,104 @@
   "suggested_practice": "సిఫార్సు చేసిన ప్రాక్టీస్ సెషన్లు",
   "streak_days": "నిరంతర రోజులు",
   "streak_days_desc": "ఈ రోజు సహా నిరంతర రోజులు",
-  "calendar": "క్యాలెండర్"
+  "calendar": "క్యాలెండర్",
+  "phrase_set_title": "ప్రతిరోజూ ఉపయోగించే పదబంధాలు",
+  "phrase_set_category_start": "సంభాషణ ప్రారంభం",
+  "phrase_set_category_reaction": "ప్రతిస్పందనలు",
+  "phrase_set_category_bye": "విడిపోవడం",
+  "phrase_set_category_change-topic": "విషయాన్ని మార్చడం",
+  "phrase_set_category_thanks": "ధన్యవాదాలు మరియు క్షమాపణలు",
+  "phrase_set_category_request": "అభ్యర్థనలు",
+  "phrase_set_category_agree": "అంగీకారం మరియు విరుద్ధత",
+  "phrase_set_category_trouble": "సమస్య సమయంలో",
+  "phrase_set_category_weather": "వాతావరణం",
+  "phrase_set_category_food": "ఆహారం మరియు రెస్టారెంట్",
+  "phrase_set_category_hobby": "హాబీలు మరియు ఆసక్తులు",
+  "phrase_set_category_family": "కుటుంబం మరియు స్నేహితులు",
+  "phrase_set_category_shopping": "షాపింగ్",
+  "phrase_set_category_health": "ఆరోగ్యం",
+  "phrase_set_category_cafe": "స్టార్బక్స్/కేఫేలో",
+  "phrase_set": {
+    "start": [
+      {"phrase": "How's it going?", "translation": "ఎలా ఉంది?"},
+      {"phrase": "What's up?", "translation": "ఏమైంది?"},
+      {"phrase": "Long time no see!", "translation": "చాలా రోజులయ్యింది!"}
+    ],
+    "reaction": [
+      {"phrase": "I see.", "translation": "అర్థమైంది."},
+      {"phrase": "That's interesting.", "translation": "అది ఆసక్తికరంగా ఉంది."},
+      {"phrase": "Exactly!", "translation": "అచ్చం అలాగే!"}
+    ],
+    "bye": [
+      {"phrase": "See you around!", "translation": "తర్వాత కలుద్దాం!"},
+      {"phrase": "Take care!", "translation": "జాగ్రత్తగా ఉండండి!"},
+      {"phrase": "Have a nice day!", "translation": "మీ రోజు మంచి గడవాలి!"}
+    ],
+    "change-topic": [
+      {"phrase": "By the way, ...", "translation": "అదికాక..."},
+      {"phrase": "Speaking of which, ...", "translation": "అదే విషయానికి వస్తే..."},
+      {"phrase": "That reminds me, ...", "translation": "అది నాకు గుర్తు చేసింది..."},
+      {"phrase": "On a different note, ...", "translation": "ఇంకొక విషయం..."}
+    ],
+    "thanks": [
+      {"phrase": "Thank you so much.", "translation": "చాలా ధన్యవాదాలు."},
+      {"phrase": "I really appreciate it.", "translation": "నేను నిజంగా అభినందిస్తున్నాను."},
+      {"phrase": "Sorry about that.", "translation": "దయచేసి మన్నించండి."},
+      {"phrase": "No worries.", "translation": "పరిస్థితి లేదు."}
+    ],
+    "request": [
+      {"phrase": "Could you help me?", "translation": "మీరు నాకు సహాయం చేయగలరా?"},
+      {"phrase": "Would you mind if I ...?", "translation": "నేను ... చేస్తే మీకు అభ్యంతరం ఉందా?"},
+      {"phrase": "Can you do me a favor?", "translation": "మీరు నాకు ఒక ఉపకారం చేయగలరా?"}
+    ],
+    "agree": [
+      {"phrase": "I agree.", "translation": "నేను అంగీకరిస్తున్నాను."},
+      {"phrase": "I think so too.", "translation": "నాకూ అలాగే అనిపిస్తోంది."},
+      {"phrase": "I'm not sure about that.", "translation": "దాని గురించి నాకు ఖచ్చితంగా తెలియదు."}
+    ],
+    "trouble": [
+      {"phrase": "I'm not sure.", "translation": "నాకు ఖచ్చితంగా తెలియదు."},
+      {"phrase": "Let me think.", "translation": "నాకు ఆలోచించనివ్వండి."},
+      {"phrase": "Can you repeat that?", "translation": "మీరు దయచేసి మళ్లీ చెప్పగలరా?"}
+    ],
+    "weather": [
+      {"phrase": "It's sunny today.", "translation": "ఈ రోజు ఎండ ఎక్కువగా ఉంది."},
+      {"phrase": "It's raining.", "translation": "వర్షం పడుతోంది."},
+      {"phrase": "It's hot, isn't it?", "translation": "ఈ రోజు చాలా వేడిగా ఉంది, కదా?"}
+    ],
+    "food": [
+      {"phrase": "I'm hungry.", "translation": "నాకు ఆకలిగా ఉంది."},
+      {"phrase": "Let's eat out.", "translation": "బయట తినదాం."},
+      {"phrase": "This is delicious!", "translation": "ఇది రుచిగా ఉంది!"}
+    ],
+    "hobby": [
+      {"phrase": "What are your hobbies?", "translation": "మీకు ఏమి హాబీలు ఉన్నాయి?"},
+      {"phrase": "I like reading.", "translation": "నాకు చదవడం ఇష్టం."},
+      {"phrase": "I play tennis.", "translation": "నేను టెన్నిస్ ఆడతాను."}
+    ],
+    "family": [
+      {"phrase": "Do you have any siblings?", "translation": "Do you have any siblings?"},
+      {"phrase": "Tell me about your family.", "translation": "Tell me about your family."},
+      {"phrase": "I have two children.", "translation": "I have two children."}
+    ],
+    "shopping": [
+      {"phrase": "How much is this?", "translation": "How much is this?"},
+      {"phrase": "Do you have this in another color?", "translation": "Do you have this in another color?"},
+      {"phrase": "Can I try this on?", "translation": "Can I try this on?"}
+    ],
+    "health": [
+      {"phrase": "I don't feel well.", "translation": "I don't feel well."},
+      {"phrase": "I have a headache.", "translation": "I have a headache."},
+      {"phrase": "Take care of yourself.", "translation": "Take care of yourself."}
+    ],
+    "cafe": [
+      {"phrase": "Can I get a tall latte, please?", "translation": "Can I get a tall latte, please?"},
+      {"phrase": "Is this seat taken?", "translation": "Is this seat taken?"},
+      {"phrase": "Can I have it to go?", "translation": "Can I have it to go?"},
+      {"phrase": "Do you have soy milk?", "translation": "Do you have soy milk?"},
+      {"phrase": "Can I get this without sugar?", "translation": "Can I get this without sugar?"},
+      {"phrase": "What's the Wi-Fi password?", "translation": "What's the Wi-Fi password?"},
+      {"phrase": "Can I get a receipt?", "translation": "Can I get a receipt?"}
+    ]
+  }
 } 
